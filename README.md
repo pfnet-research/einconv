@@ -2,7 +2,7 @@
 
 ![image](https://drive.google.com/uc?export=view&id=1A0R5ySqDnHqY9bFPgqcTok4w5AjQlfer)
 
-Einconv is a flexible CNN module in which the structure is described as [tensor network](https://tensornetwork.org/) --- graphical notation for tensor decomposition. Einconv is basically an extension of [numpy.einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html) so that we can compute higher-order convolution and multiplication in a consistent manner. 
+Einconv is a flexible CNN module in which the structure is described as [tensor network](https://tensornetwork.org/) --- graphical notation for tensor decomposition. Einconv is basically an extension of [numpy.einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html), as we can consistently compute higher-order convolution and multiplication. 
 - Einconv can mimic many existing CNN modules shown in the above picture.
 - You can design your own CNN module by editing a graph structure.
 - Applicable to 3D or more higher-order convolution.
@@ -23,11 +23,11 @@ arXiv:xxxx.xxxxx (2019).
 
 ## Training with specifying a tensor network
 
-For first demo, you can try `python -u train_fmnist.py --graph 1_2_1_1_1_1_1` to learn with Fashion MNIST data set, where the option `--graph 1_2_1_1_1_1_1` specifies a tensor network that is transformed into a CNN module. 
+For the first demo, you can try `python -u train_fmnist.py --graph 1_2_1_1_1_1_1` to learn with Fashion MNIST data set, where the option `--graph 1_2_1_1_1_1_1` specifies a tensor network that is transformed into a CNN module. 
 
 ## Graph format
 
-The `graph` option follows the sequence of digits delimited by the under score `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module, and the second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remining digits show an adjacency matrix that describes the tensor network in a flatten manner with row major order. In the example, the adjacency matrix is as follow.
+The `graph` option follows the sequence of digits delimited by the underscore `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module, and the second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remaining digits show an adjacency matrix that describes the tensor network in row-major order. In the example, the adjacency matrix is as follow.
 ```
 i o c c c e r
 -------------
@@ -35,7 +35,7 @@ i o c c c e r
 0 1 1 1 1 1 1
 ```
 
-In the adjacency matrix, the first two columns associate with the in-channel and out-channel. The next *n* columnsh associate with the nd convolution (inner indices). The *m* columns associate with extra channels (outer indices). The last column indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
+In the adjacency matrix, the first two columns represent the in-channel and out-channel. The next *n* columns represent the nd convolution (inner indices). The *m* columns represent extra channels (outer indices). The last column indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
 
 ## Graph examples
 ### 2D
@@ -51,5 +51,5 @@ In the adjacency matrix, the first two columns associate with the in-channel and
 - Depthwise separable: `2_3_1_0_1_1_1_0_1_1_0_0_0_0`
 - (2+1)D convolution: `2_3_1_0_1_1_0_1_0_0_1_0_0_1_1_0`
 - CP: `5_3_1_0_0_0_0_1_0_0_0_0_0_1_1_0_0_0_0_1_0_1_0_0_0_1_0_0_1_0_0_1_0_0_0_1_0`
-- TT: `5_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_0_1_0_0_0_0`
-- HT: `7_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_0_0_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_1_0_0_0_0_0_0_0_0_0_1_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_0`
+- Tensor Train: `5_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_0_1_0_0_0_0`
+- Hierarchical Tucker: `7_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_0_0_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_1_0_0_0_0_0_0_0_0_0_1_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_0`
