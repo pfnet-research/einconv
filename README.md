@@ -27,7 +27,7 @@ For the first demo, you can try `python -u train_fmnist.py --graph 1_2_1_1_1_1_1
 
 ## Graph format
 
-The `graph` option follows the sequence of digits delimited by the underscore `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module. The second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remaining digits show an adjacency matrix that describes the tensor network in row-major order. In the example, the adjacency matrix is as follow.
+The `graph` option follows the sequence of digits delimited by the underscore `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module. The second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remaining digits show an adjacency matrix that describes the tensor network in row-major order. The adjacency matrix of the example is as follow.
 ```
 i o c c c e r
 -------------
@@ -35,7 +35,7 @@ i o c c c e r
 0 1 1 1 1 1 1
 ```
 
-In the adjacency matrix, the first two columns represent the in-channel and out-channel. The next *n* columns represent the *n*d convolution (inner indices). The *m* columns represent extra channels (outer indices). The last column indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
+In the adjacency matrix, the first two columns `i` and `o` respectively represent the in-channel and out-channel. The next *n* columns `c` represent the *n*d convolution (inner indices). The next *m* columns `e` represent extra channels (outer indices). The last column `r` indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
 
 ## Graph examples
 ### 2D
