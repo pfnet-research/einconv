@@ -2,7 +2,7 @@
 
 ![image](https://drive.google.com/uc?export=view&id=1A0R5ySqDnHqY9bFPgqcTok4w5AjQlfer)
 
-Einconv is a flexible CNN module in which the structure is described as [tensor network](https://tensornetwork.org/) --- graphical notation for tensor decomposition. Einconv is basically an extension of [numpy.einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html), as we can consistently compute higher-order convolution and multiplication. 
+*Einconv* is a powerful CNN module in which the structure is described in [tensor network](https://tensornetwork.org/) language. Einconv is basically an extension of [numpy.einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html), as we can uniformly compute higher-order convolution and multiplication. 
 - Einconv can mimic many existing CNN modules shown in the above picture.
 - You can design your own CNN module by editing a graph structure.
 - Applicable to 3D or more higher-order convolution.
@@ -35,7 +35,7 @@ i o c c c e r
 0 1 1 1 1 1 1
 ```
 
-In the adjacency matrix, the first two columns represent the in-channel and out-channel. The next *n* columns represent the nd convolution (inner indices). The *m* columns represent extra channels (outer indices). The last column indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
+In the adjacency matrix, the first two columns represent the in-channel and out-channel. The next *n* columns represent the *n*d convolution (inner indices). The *m* columns represent extra channels (outer indices). The last column indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
 
 ## Graph examples
 ### 2D
