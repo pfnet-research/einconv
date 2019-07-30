@@ -35,7 +35,7 @@ i o c c c e r
 0 1 1 1 1 1 1
 ```
 
-In the adjacency matrix, the first two columns `i` and `o` respectively represent the in-channel and out-channel. The next *n* columns `c` represent the *n*d convolution (inner indices). The next *m* columns `e` represent extra channels (outer indices). The last column `r` indicates whether ReLU is on (`1`) or off (`2`). The number of columns is therefore *2 + n + m + 1*.
+In the adjacency matrix, the first two columns `i` and `o` respectively represent the in-channel and out-channel. The next *n* columns `c` represent the *n*d convolution (inner indices). The next *m* columns `e` represent extra channels (outer indices). The last column `r` indicates whether ReLU is on (`1`) or off (`0`). The number of columns is therefore *2 + n + m + 1*.
 
 ## Graph examples
 ### 2D
