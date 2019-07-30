@@ -27,7 +27,7 @@ For the first demo, you can try `python -u train_fmnist.py --graph 1_2_1_1_1_1_1
 
 ## Graph format
 
-The `graph` option follows the sequence of digits delimited by the underscore `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module, and the second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remaining digits show an adjacency matrix that describes the tensor network in row-major order. In the example, the adjacency matrix is as follow.
+The `graph` option follows the sequence of digits delimited by the underscore `_`, for example `2_3_1_0_1_1_1_1_0_0_1_1_1_1_1_1`. The first digit (`2`) indicates the number of layers involving the convolution module. The second digit (`3`) indicates the spatial dimension of a data set, e.g., `3` for 3D convolution. The remaining digits show an adjacency matrix that describes the tensor network in row-major order. In the example, the adjacency matrix is as follow.
 ```
 i o c c c e r
 -------------
