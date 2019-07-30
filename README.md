@@ -1,11 +1,13 @@
 # Einconv
 
+![image](https://drive.google.com/uc?export=view&id=1A0R5ySqDnHqY9bFPgqcTok4w5AjQlfer)
+
 A flexible CNN module in which the structure is described as a tensor network --- graphical notation for tensor decomposition.
 - Einconv can mimic many existing CNN modules shown in the above picture.
 - You can design your own CNN module by editing a graph structure.
 - Applicable to 3D or more higher-order convolution.
 
-The code is based on Chainer but the basic concept is transferable to other libraries such as PyTorch.
+The code is based on [Chainer](https://chainer.org/). The basic concept is transferable to other libraries such as [PyTorch](https://pytorch.org/).
 
 ### Reference
 
