@@ -2,7 +2,7 @@
 
 ![image](https://drive.google.com/uc?export=view&id=1A0R5ySqDnHqY9bFPgqcTok4w5AjQlfer)
 
-Einconv is a flexible CNN module in which the structure is described as [tensor network](https://tensornetwork.org/) --- graphical notation for tensor decomposition. Einconv is basically an extension of `numpy.einsum` so that we can compute higher-order convolution and multiplication in a consistent manner. 
+Einconv is a flexible CNN module in which the structure is described as [tensor network](https://tensornetwork.org/) --- graphical notation for tensor decomposition. Einconv is basically an extension of [numpy.einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html) so that we can compute higher-order convolution and multiplication in a consistent manner. 
 - Einconv can mimic many existing CNN modules shown in the above picture.
 - You can design your own CNN module by editing a graph structure.
 - Applicable to 3D or more higher-order convolution.
