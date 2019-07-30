@@ -41,7 +41,7 @@ In the adjacency matrix, the first two columns represent the in-channel and out-
 ### 2D
 - Standard: `1_2_1_1_1_1_0`
 - Flattend: `3_2_1_1_0_0_0_0_1_0_1_0_0_1_1_0_0`
-- Depthwise separable.: `2_2_1_0_1_1_1_1_1_0_0_1`
+- Depthwise separable: `2_2_1_0_1_1_1_1_1_0_0_1`
 - Bottleneck: `3_2_1_0_0_0_3_0_1_0_0_1_1_3_3_1_0_1_0_0_0_3_1`
 - Factoring: `2_2_1_0_1_1_1_1_1_1_1_1`
 - CP: `4_2_1_0_0_0_3_0_0_0_0_1_3_0_0_0_1_0_3_0_0_1_0_0_3_0`
