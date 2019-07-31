@@ -35,7 +35,7 @@ i o c c c e r
 0 1 1 1 1 1 1
 ```
 
-In the adjacency matrix, the first two columns `i` and `o` respectively represent the in-channel and out-channel. The next *n* columns `c` represent the *n*d convolution (inner indices). The next *m* columns `e` represent extra channels (outer indices). The last column `r` indicates whether ReLU is on (`1`) or off (`0`). The number of columns is therefore *2 + n + m + 1*.
+In the adjacency matrix, the first two columns denoted by `i` and `o` respectively represent the in-channel and out-channel. The next *n* columns `c` represent the *n*d convolution. The next *m* columns `e` represent extra channels (inner indices). The last column `r` indicates whether ReLU is on (`1`) or off (`0`). The number of columns is therefore *2 + n + m + 1*.
 
 ## Graph examples
 ### 2D
@@ -53,3 +53,12 @@ In the adjacency matrix, the first two columns `i` and `o` respectively represen
 - CP: `5_3_1_0_0_0_0_1_0_0_0_0_0_1_1_0_0_0_0_1_0_1_0_0_0_1_0_0_1_0_0_1_0_0_0_1_0`
 - Tensor Train: `5_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_1_1_0_0_0_0_1_0_0_0_1_0_0_0_0`
 - Hierarchical Tucker: `7_3_1_0_0_0_0_0_0_0_1_0_0_0_0_0_1_0_0_0_0_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_1_0_0_0_0_0_0_0_0_0_1_0_0_1_0_0_0_0_0_0_0_0_0_0_1_1_1_0_0_0_0_0_1_0_0_0_0_0_1_0_0_1_0`
+
+## Enumeration of graphs
+
+```
+python enumerate_graph.py n m
+```
+We can enumerate the possible set of graphs by `enumerate_graph.py`. It takes 2 arguments:
+- `n` -- The dimension of convolution.
+- `m` -- The number of extra channels.
