@@ -21,9 +21,11 @@ arXiv:xxxx.xxxxx (2019).
 - Numpy 1.13.3
 - Chainer 5.1.0
 
-## Training with specifying a tensor network
+## A simple demo
 
-For the first demo, you can try `python -u train_fmnist.py --graph 1_2_1_1_1_1_1` to learn with Fashion MNIST data set, where the option `--graph 1_2_1_1_1_1_1` specifies a tensor network that is transformed into a CNN module. 
+You can try 
+```python -u train_fmnist.py --graph 1_2_1_1_1_1_1``` 
+to learn with Fashion MNIST data set, where the option `--graph 1_2_1_1_1_1_1` specifies a tensor network that is transformed into a CNN module. 
 
 ## Graph format
 
