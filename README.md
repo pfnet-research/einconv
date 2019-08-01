@@ -24,7 +24,9 @@ arXiv:xxxx.xxxxx (2019).
 ## A simple demo
 
 You can try 
-```python -u train_fmnist.py --graph 1_2_1_1_1_1_1``` 
+```
+python -u train_fmnist.py --graph 1_2_1_1_1_1_1
+``` 
 to learn with Fashion MNIST data set, where the option `--graph 1_2_1_1_1_1_1` specifies a tensor network that is transformed into a CNN module. 
 
 ## Graph format
