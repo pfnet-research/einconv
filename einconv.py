@@ -32,8 +32,8 @@ class Einconv(chainer.Chain):
 
         # define parameters
         bn_axis = [self.gm.BATCH_IND] + \
-                  self.gm.get_filter_indices().tolist() + \
-                  self.gm.get_image_indices().tolist()
+                  self.gm.get_filter_indices() + \
+                  self.gm.get_image_indices()
         for i in range(1, self.gm.num_tensors + 1):
             dims = self.gm.get_dims(i, expanded=True)
             henormal_scale = sqrt(2 / self.gm.get_fan_in(i))
