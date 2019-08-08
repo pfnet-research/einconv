@@ -61,8 +61,14 @@ class Einconv(chainer.Chain):
     def set_param(self, tid, val):
         return setattr(self, self.param_name(tid), val)
 
+    def is_convdim_compatible(self, x):
+        input_spatial_dim = len(x.shape) - 2
+        return input_spatial_dim == self.gm.CONV_DIM
+    
     def forward(self, x):
         batchsize = x.shape[0]
+        assert is_convdim_compatible(x),\
+            'kernel dim %d is not compatible to input spatial dim %d' % (self.gm.CONV_DIM, len(x.shape) - 2)
         
         Z = F.reshape(x, self.gm.get_dims(tensor_id=0, expanded=True).tolist())
         image_flags = self.gm.indices2flags(self.gm.get_image_indices())
