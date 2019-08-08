@@ -21,7 +21,6 @@ def decode_graph_and_relu(encoded_graph):
 class GManager(chainer.Link):
     INIT_INCH_IND = 0
     INIT_OUTCH_IND = 1
-
     BATCH_IND = 0
 
     M_OPEN = 1
@@ -32,18 +31,16 @@ class GManager(chainer.Link):
     def __init__(self, graph_str, shapes):
         super(GManager, self).__init__()
         
-        graph, relu_flags, conv_dim = decode_graph_and_relu(graph_str)
-        assert self.are_spatial_dims_consistent(conv_dim, shapes),\
-            "shapes['image'] and shapes['filter'] should be the same dim as the convolution dim %d" % conv_dim
-        self.NUM_VARS = 2 + conv_dim
-        self.INIT_CONV_INDS = [i + 2 for i in range(conv_dim)]
+        graph, relu_flags, self.CONV_DIM = decode_graph_and_relu(graph_str)
+        assert self.are_spatial_dims_consistent(self.CONV_DIM, shapes),\
+            "shapes['image'] and shapes['filter'] should be the same dim as the convolution dim %d" % self.CONV_DIM
+        self.NUM_VARS = 2 + self.CONV_DIM
+        self.INIT_CONV_INDS = [i + 2 for i in range(self.CONV_DIM)]
         self.INIT_EXCH_INDS = [i + self.NUM_VARS for i in range(graph.shape[1] - self.NUM_VARS)]
         self.INIT_CH_INDS = [self.INIT_INCH_IND, self.INIT_OUTCH_IND] + self.INIT_EXCH_INDS
 
-        self.CONV_INDS = [i + 1 + len(self.INIT_CH_INDS) for i in range(conv_dim)]
-        self.HW_INDS = [i + 1 + len(self.INIT_CH_INDS) + conv_dim for i in range(conv_dim)]
-
-        self.CONV_DIM = conv_dim
+        self.CONV_INDS = [i + 1 + len(self.INIT_CH_INDS) for i in range(self.CONV_DIM)]
+        self.HW_INDS = [i + 1 + len(self.INIT_CH_INDS) + self.CONV_DIM for i in range(self.CONV_DIM)]
 
         self.graph, self.dims, self.relu_flags = self.initialize_graph(graph, shapes, relu_flags)
         self.parsed_graph = self.parse_graph(self.graph)
@@ -117,11 +114,6 @@ class GManager(chainer.Link):
         return graph, dims, relu_flags
 
     def join_graph_and_dims(self, graph, shapes):
-        #if len(shapes['filter']) == 1:
-        #    shapes['filter'] = shapes['filter'] * self.CONV_DIM
-        #assert len(shapes['filter']) == self.CONV_DIM,\
-        #    "shapes['filter'] must be scalar or the same dim as convolution dim (%d != %d)" \
-        #    % (len(shapes['filter']), self.CONV_DIM)
         dims = self.xp.ones(graph.shape[1], dtype=int)
         dims[self.INIT_INCH_IND] = shapes['inch']
         dims[self.INIT_OUTCH_IND] = shapes['outch']
