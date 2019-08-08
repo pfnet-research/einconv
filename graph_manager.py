@@ -139,10 +139,10 @@ class GManager(chainer.Link):
         return incomming_neurons * receptive_field_size
 
     def get_image_indices(self):
-        return self.xp.array(self.HW_INDS, dtype=int)
+        return self.HW_INDS
 
     def get_filter_indices(self):
-        return self.xp.array(self.CONV_INDS, dtype=int)
+        return self.CONV_INDS
 
     def indices2flags(self, inds):
         return self.xp.array([i in inds for i in range(self.graph.shape[1])], dtype=bool)

@@ -3,6 +3,7 @@ import chainer.functions as F
 from chainer import initializers
 from chainer.links import BatchNormalization
 
+# for debugging
 import logging
 # logging.basicConfig(level=logging.DEBUG)
 from functools import reduce
@@ -107,20 +108,20 @@ def expanded_einconv(X, W, sum_flags, image_flags, filter_flags, xp):
 
     logging.debug(X.shape)
     image_flagss = decompose_flags(image_flags)
-    _X = moveaxis_n_reshape(X, [other_X_flags, parallel_flags, sum_flags] + image_flagss)
-    __X = merge(_X, axis=[1, 2])
+    X = moveaxis_n_reshape(X, [other_X_flags, parallel_flags, sum_flags] + image_flagss)
+    X = merge(X, axis=[1, 2])
     # now X should be Ox x [P*C] x H x W
 
     logging.debug(W.shape)
     filter_flagss = decompose_flags(filter_flags)
-    _W = moveaxis_n_reshape(W, [parallel_flags, other_W_flags, sum_flags] + filter_flagss)
-    __W = merge(_W, axis=[0, 1])
+    W = moveaxis_n_reshape(W, [parallel_flags, other_W_flags, sum_flags] + filter_flagss)
+    W = merge(W, axis=[0, 1])
     # now W should be [P*Ow] x C x h x w
 
     logging.debug(' X.shape and inds:')
-    logging.debug(__X.shape)
+    logging.debug(X.shape)
     logging.debug(' W.shape and inds:')
-    logging.debug(__W.shape)
+    logging.debug(W.shape)
     logging.debug(' sum_flags:')
     logging.debug(sum_flags)
 
@@ -129,25 +130,25 @@ def expanded_einconv(X, W, sum_flags, image_flags, filter_flags, xp):
     pad_size = (filter_size // 2).tolist()
     groups = int(X_dims[parallel_flags].prod())  # if sum(parallel_flags) > 0 else 1
     if spatial_dim == 2:
-        __Z = F.convolution_2d(__X, __W, pad=pad_size, groups=groups)
+        Z = F.convolution_2d(X, W, pad=pad_size, groups=groups)
     else:
-        __Z = F.convolution_nd(__X, __W, pad=pad_size, groups=groups)
+        Z = F.convolution_nd(X, W, pad=pad_size, groups=groups)
 
-    if __Z.shape[1] == 1:  ### trick to avoid strange bug in cudnn or chainer
-        __Z = __Z[:, :1]
+    if Z.shape[1] == 1:  ### trick to avoid strange bug in cudnn or chainer
+        Z = Z[:, :1]
     logging.debug(' Z.shape and inds after conv:')
-    logging.debug(__Z.shape)
+    logging.debug(Z.shape)
 
     # now Z should be Ox x [P*Ow] x H x W
 
     dims_Ox = X_dims[other_X_flags].tolist()
     dims_P = X_dims[parallel_flags].tolist()
     dims_Ow = W_dims[other_W_flags].tolist()
-    _Z = split(__Z, axis=1, dim=[prod(dims_P), prod(dims_Ow)])
+    Z = split(Z, axis=1, dim=[prod(dims_P), prod(dims_Ow)])
 
     flagss = [other_X_flags, parallel_flags, other_W_flags] + image_flagss
     dims = dims_Ox + dims_P + dims_Ow + image_size.tolist()
-    Z = epahser_n_sixaevom(_Z, flagss, dims)
+    Z = epahser_n_sixaevom(Z, flagss, dims)
 
     return Z
 
