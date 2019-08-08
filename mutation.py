@@ -1,15 +1,13 @@
 import numpy as np
 import logging
 # logging.basicConfig(level=logging.DEBUG)
+from itertools import chain, combinations
 
-from src.links.graph_manager import GManager
 
-# Reference: https://stackoverflow.com/a/1482320
-def powerset(s):
-    x = len(s)
-    masks = [1 << i for i in range(x)]
-    for i in range(1 << x):
-        yield [ss for mask, ss in zip(masks, s) if i & mask]
+def powerset(iterable):
+    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 def same_hyperedge(graph, i, j):
     return np.all((graph[:, i] > 0) == (graph[:, j] > 0))
@@ -23,14 +21,13 @@ def count(arr, axis=None):
 
 class Mutation:
     def __init__(self, seed=1, num_vars=4, max_node=5, rank_when_splitted=1, max_dilation=3,
-                 memory_limit_MB=float('Inf'), num_retry=1000,
+                 num_retry=1000,
                  shapes={'batch': 32, 'inch': 64, 'outch': 64, 'image': [32, 32], 'filter': [3, 3], 'inner_exp': 0}):
         np.random.seed(seed)
         self.num_vars = num_vars
         self.max_node = max_node
         self.rank_when_splitted = rank_when_splitted
         self.max_dilation = max_dilation
-        self.memory_limit = memory_limit_MB * 1e6
         self.num_retry = num_retry
         self.shapes = shapes
         self.gprob = {'flip': 1 / 2,
@@ -40,10 +37,6 @@ class Mutation:
                       'disconnect': 1 / 2}
         self.oprob = {'push': 1 / 2,
                       'swap': 1 / 2}
-
-    def memory_usage(self, raw_graph, itemsize=8):
-        gm = GManager(raw_graph, self.shapes)
-        return gm.memory_usage(itemsize)
 
     def mutate(self, graph, relus):
         for t in range(self.num_retry):
@@ -59,8 +52,7 @@ class Mutation:
 
             if g.shape[0] == 1:
                 continue
-            if max(self.memory_usage(g)) <= self.memory_limit:
-                return g, r
+            return g, r
 
         return graph, relus
 
@@ -199,15 +191,6 @@ class Mutation:
 
         return graph, relus
 
-# Reference: https://stackoverflow.com/a/1094933
-def sizeof_fmt(num, suffix='B'):
-    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
-        if abs(num) < 1024.0:
-            return "%3.1f%s%s" % (num, unit, suffix)
-        num /= 1024.0
-    return "%.1f%s%s" % (num, 'Yi', suffix)
-
-
 if __name__ == '__main__':
     # graph = np.array([[0, 1, 0, 1, 0, 1],
     #                  [1, 1, 0, 0, 1, 1],
@@ -218,9 +201,8 @@ if __name__ == '__main__':
     print(graph)
     shapes = {'batch': 32, 'inch': 64, 'outch': 64, 'image': [32, 32], 'filter': [3, 3], 'inner_exp': 1}
 
-    mut = Mutation(memory_limit_MB=8000, shapes=shapes)
+    mut = Mutation(shapes=shapes)
     for i in range(100):
         graph, relus = mut.mutate(graph, relus)
         print(graph)
         print(relus)
-        print([sizeof_fmt(m) for m in mut.memory_usage(graph)])
