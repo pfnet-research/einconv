@@ -14,8 +14,8 @@ def decode_graph(string):
 
 
 def decode_graph_and_relu(encoded_graph):
-    gr, _ = decode_graph(encoded_graph)
-    return gr[:, :-1], gr[:, -1]
+    gr, spatial_dim = decode_graph(encoded_graph)
+    return gr[:, :-1], gr[:, -1], spatial_dim
 
 
 class GManager(chainer.Link):
@@ -32,8 +32,9 @@ class GManager(chainer.Link):
     def __init__(self, graph_str, shapes):
         super(GManager, self).__init__()
         
-        graph, relu_flags = decode_graph_and_relu(graph_str)
-        conv_dim = len(shapes['filter'])
+        graph, relu_flags, conv_dim = decode_graph_and_relu(graph_str)
+        assert self.are_spatial_dims_consistent(conv_dim, shapes),\
+            "shapes['image'] and shapes['filter'] should be the same dim as the convolution dim %d" % conv_dim
         self.NUM_VARS = 2 + conv_dim
         self.INIT_CONV_INDS = [i + 2 for i in range(conv_dim)]
         self.INIT_EXCH_INDS = [i + self.NUM_VARS for i in range(graph.shape[1] - self.NUM_VARS)]
@@ -52,6 +53,10 @@ class GManager(chainer.Link):
         self.register_persistent('parsed_graph')
 
         self.num_tensors = self.graph.shape[0] - 1  # number of tensor variables including the input one
+
+    def are_spatial_dims_consistent(self, conv_dim, shapes):
+        return conv_dim == len(shapes['image']) == len(shapes['filter'])
+    
 
     def parse_graph(self, graph):
         active_first = self.xp.array([self.xp.min(self.xp.nonzero(graph[:, i]))
@@ -112,6 +117,11 @@ class GManager(chainer.Link):
         return graph, dims, relu_flags
 
     def join_graph_and_dims(self, graph, shapes):
+        #if len(shapes['filter']) == 1:
+        #    shapes['filter'] = shapes['filter'] * self.CONV_DIM
+        #assert len(shapes['filter']) == self.CONV_DIM,\
+        #    "shapes['filter'] must be scalar or the same dim as convolution dim (%d != %d)" \
+        #    % (len(shapes['filter']), self.CONV_DIM)
         dims = self.xp.ones(graph.shape[1], dtype=int)
         dims[self.INIT_INCH_IND] = shapes['inch']
         dims[self.INIT_OUTCH_IND] = shapes['outch']

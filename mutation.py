@@ -3,7 +3,6 @@ import logging
 # logging.basicConfig(level=logging.DEBUG)
 from itertools import chain, combinations
 
-
 def powerset(iterable):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     s = list(iterable)
@@ -136,11 +135,9 @@ class Mutation:
         connect_ind = (count(graph[:, self.num_vars:] > 0, axis=0) >= 2).tolist()
         graph = graph[:, [True] * self.num_vars + connect_ind]
 
-        # print(graph)
         ### check if there exists the same hyperedge
         for i in reversed(range(self.num_vars + 1, graph.shape[1])):
             for j in reversed(range(self.num_vars, i)):
-                # print(i, j, same_hyperedge(graph, i, j))
                 if same_hyperedge(graph, i, j):
                     graph[:, j] += graph[:, i]
                     graph = np.delete(graph, i, axis=1)
