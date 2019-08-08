@@ -67,7 +67,7 @@ class Einconv(chainer.Chain):
     
     def forward(self, x):
         batchsize = x.shape[0]
-        assert is_convdim_compatible(x),\
+        assert self.is_convdim_compatible(x),\
             'kernel dim %d is not compatible to input spatial dim %d' % (self.gm.CONV_DIM, len(x.shape) - 2)
         
         Z = F.reshape(x, self.gm.get_dims(tensor_id=0, expanded=True).tolist())
