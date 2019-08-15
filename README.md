@@ -12,8 +12,17 @@ The code is based on [Chainer](https://chainer.org/). The basic concept is trans
 ### Reference
 
 Kohei Hayashi, Taiki Yamaguchi, Yohei Sugawara, Shin-ichi Maeda.
-Exploring Unexplored Tensor Decompositions for Convolutional Neural Networks.
-arXiv:xxxx.xxxxx (2019).
+[Exploring Unexplored Tensor Decompositions for Convolutional Neural Networks.](https://arxiv.org/abs/1908.04471)
+arXiv:1908.04471 (2019).
+
+```
+@misc{1908.04471,
+Author = {Kohei Hayashi and Taiki Yamaguchi and Yohei Sugawara and Shin-ichi Maeda},
+Title = {Einconv: Exploring Unexplored Tensor Decompositions for Convolutional Neural Networks},
+Year = {2019},
+Eprint = {arXiv:1908.04471},
+}
+```
 
 ## Tested environment
 
