@@ -2,7 +2,7 @@
 
 ![image](https://drive.google.com/uc?export=view&id=1A0R5ySqDnHqY9bFPgqcTok4w5AjQlfer)
 
-*Einconv* is a powerful CNN module in which the structure is described in the language of [tensor network](https://tensornetwork.org/). Einconv is basically an extension of Numpy's [einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html) --- we can uniformly compute higher-order convolution and multiplication. In short, Einconv has the following appealing features. 
+*Einconv* is a powerful CNN module in which the structure is described in the language of [tensor network](https://tensornetwork.org/). Einconv is basically an extension of Numpy's [einsum](https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html) --- we can uniformly compute higher-order convolution and multiplication in a single fashion. In short, Einconv has the following appealing features. 
 - Einconv can mimic a lot of CNN modules shown in the above picture.
 - You can design your own CNN module by modifying a graph structure.
 - Applicable to 3D or more higher-order convolution.
